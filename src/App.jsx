@@ -1,15 +1,26 @@
 import React, { useMemo, useState } from "react";
 
-/* ---------- CONFIG ---------- */
+/* ---------- THEME (from your logo) ---------- */
+const HEADER_IMAGE = "/order-header.jpg"; // put your logo at /public/order-header.jpg
+const COLORS = {
+  bg: "#d9f2f4",
+  text: "#02273f",
+  card: "#ffffff",
+  border: "#bfe4ea",
+  muted: "#35566a",
+  button: "#02273f",
+  thead: "#eef8fa",
+};
 
+/* ---------- SUPPLIER ORDER ---------- */
 const SUPPLIER_ORDER = ["Sysco", "Office Supply", "HD Supply", "Amazon", "Other"];
-const HEADER_IMAGE = "/order-header.jpg";
 
-// Catalog with the last entries replaced by what you sent.
-// Note: inch marks in two earlier items use "in" to avoid string issues.
+/* ---------- CATALOG (complete list) ---------- */
+// Note: keep prices as numbers (no $). Inch marks are plain text; quotes are avoided.
 const CATALOG = [
+  // Sysco (original base)
   {"supplier":"Sysco","itemNumber":"8461087","name":"Gallon Dish Soap 4/1G","ppu":37.53,"uom":""},
-  {"supplier":"Sysco","itemNumber":"7932785","name":"Foam Bowls","ppu":31.7,"uom":""},
+  {"supplier":"Sysco","itemNumber":"7932785","name":"Foam Bowls","ppu":31.70,"uom":""},
   {"supplier":"Sysco","itemNumber":"7551308","name":"To Go Food Containers (150)","ppu":19.54,"uom":""},
   {"supplier":"Sysco","itemNumber":"4088829","name":"8oz Foam Cups","ppu":22.81,"uom":""},
   {"supplier":"Sysco","itemNumber":"5274832","name":"Foam Plates","ppu":25.71,"uom":""},
@@ -40,7 +51,7 @@ const CATALOG = [
   {"supplier":"Sysco","itemNumber":"7230373","name":"Spray Bottles 12/32oz","ppu":36.19,"uom":""},
   {"supplier":"Sysco","itemNumber":"7467095","name":"Ziploc 1 Gallon","ppu":20.99,"uom":""},
   {"supplier":"Sysco","itemNumber":"7041740","name":"Ziploc Sandwich","ppu":18.98,"uom":""},
-  {"supplier":"Sysco","itemNumber":"955226","name":"Brillo Pads","ppu":25.1,"uom":""},
+  {"supplier":"Sysco","itemNumber":"955226","name":"Brillo Pads","ppu":25.10,"uom":""},
   {"supplier":"Sysco","itemNumber":"3415883","name":"Furniture Polish 6/13oz","ppu":29.91,"uom":""},
   {"supplier":"Sysco","itemNumber":"2650542","name":"Dust Mop Treatment 12/18oz","ppu":55.01,"uom":""},
   {"supplier":"Sysco","itemNumber":"466531","name":"Lysol 68895","ppu":71.31,"uom":""},
@@ -51,12 +62,42 @@ const CATALOG = [
   {"supplier":"Sysco","itemNumber":"3455346","name":"Baking Soda 4/16oz","ppu":22.64,"uom":""},
   {"supplier":"Sysco","itemNumber":"1646020","name":"Carpet Deodorizer 6/14oz","ppu":58.93,"uom":""},
 
-  // New Office Supply and HD Supply items
+  // Sysco (your additional items)
+  {"supplier":"Sysco","itemNumber":"5718178","name":"Forks Refill","ppu":40.11,"uom":""},
+  {"supplier":"Sysco","itemNumber":"5718749","name":"Knives Refill","ppu":40.11,"uom":""},
+  {"supplier":"Sysco","itemNumber":"7114241","name":"Spoons Refill","ppu":43.57,"uom":""},
+  {"supplier":"Sysco","itemNumber":"2514028","name":"Floor Cleaner Sanitizing 1/2.5G","ppu":142.26,"uom":""},
+  {"supplier":"Sysco","itemNumber":"7335194","name":"Hand Sanitizer 1/1L","ppu":16.03,"uom":""},
+  {"supplier":"Sysco","itemNumber":"4294924","name":"Hand Soap Cartridge 41150ML","ppu":157.86,"uom":""},
+  {"supplier":"Sysco","itemNumber":"2125421","name":"Baking Soda 24/16OZ","ppu":27.98,"uom":""},
+  {"supplier":"Sysco","itemNumber":"5026234","name":"Hand Soap bottle Refill 4/1G","ppu":188.02,"uom":""},
+  {"supplier":"Sysco","itemNumber":"7074078","name":"Liquid Bleach Cleaning Spray 4/32OZ","ppu":31.17,"uom":""},
+  {"supplier":"Sysco","itemNumber":"7863540","name":"Reclosable Bag Quart Size 1/500CT","ppu":26.06,"uom":""},
+  {"supplier":"Sysco","itemNumber":"7863634","name":"Reclosable Bag Gallon Size 1/250CT","ppu":24.63,"uom":""},
+  {"supplier":"Sysco","itemNumber":"8549935","name":"Aerosol Disinfecting Spray 6/14OZ","ppu":46.91,"uom":""},
+  {"supplier":"Sysco","itemNumber":"328652127","name":"Laundry Detergent Tablets 1/150CT","ppu":269.35,"uom":""},
+  {"supplier":"Sysco","itemNumber":"5889407","name":"Kitchen Napkins Refill 12/500CT","ppu":49.01,"uom":""},
+  {"supplier":"Sysco","itemNumber":"7066238","name":"Gym Wipes","ppu":42.63,"uom":""},
+  {"supplier":"Sysco","itemNumber":"7153573","name":"Hydrogen Peroxide 4/32OZ","ppu":51.67,"uom":""},
+  {"supplier":"Sysco","itemNumber":"7796313","name":"Office Trash Can Liners 200/23G","ppu":50.37,"uom":""},
+  {"supplier":"Sysco","itemNumber":"1298821","name":"Black Trash Can Liner 60 Gallon 100/60G","ppu":43.88,"uom":""},
+  {"supplier":"Sysco","itemNumber":"2544510","name":"Hand sanitizer Cartridge 4/750ML","ppu":75.24,"uom":""},
+  {"supplier":"Sysco","itemNumber":"7066238-2","name":"Hard Surface Wipes 6/200CT","ppu":42.63,"uom":""}, // key adjusted to avoid clash
+  {"supplier":"Sysco","itemNumber":"7180880","name":"Multi Surface Sanitizer 6/32OZ","ppu":43.46,"uom":""},
+  {"supplier":"Sysco","itemNumber":"7682790","name":"Glass Cleaner 4/32OZ","ppu":28.08,"uom":""},
+  {"supplier":"Sysco","itemNumber":"6303523","name":"Sponge (Yellow/Green) 1/20CT","ppu":26.18,"uom":""},
+  {"supplier":"Sysco","itemNumber":"2306781","name":"Gloves X-Large 10/100CT","ppu":58.05,"uom":""},
+  {"supplier":"Sysco","itemNumber":"2306775","name":"Gloves Large 10/100CT","ppu":58.05,"uom":""},
+  {"supplier":"Sysco","itemNumber":"2306753","name":"Gloves Medium 10/100CT","ppu":58.05,"uom":""},
+
+  // Office Supply
   {"supplier":"Office Supply","itemNumber":"ODFN8738593","name":"Diversey BreakDown XC Odor Eliminator 1/2.5L","ppu":111.31,"uom":""},
   {"supplier":"Office Supply","itemNumber":"RAC74035CT","name":"Old English polish 12/12.5OZ","ppu":81.52,"uom":""},
   {"supplier":"Office Supply","itemNumber":"PGC96257","name":"Febreze Air Clean Linen 6/8.8OZ","ppu":21.56,"uom":""},
   {"supplier":"Office Supply","itemNumber":"CLO31036","name":"Clorox Urine Remover 1/128OZ","ppu":67.71,"uom":""},
   {"supplier":"Office Supply","itemNumber":"CLO35417CT","name":"CloroxPro Clean-Up","ppu":64.85,"uom":""},
+
+  // HD Supply
   {"supplier":"HD Supply","itemNumber":"SPA6343","name":"Bath Disinfectant Cleaner-TNT","ppu":63.48,"uom":""},
   {"supplier":"HD Supply","itemNumber":"SPA7116-12","name":"NABC Bathroom Disinfectant Cleaner","ppu":50.52,"uom":""},
   {"supplier":"HD Supply","itemNumber":"REN06131-WB","name":"Renown Natural White 8 in. Controlled Hardwound Paper Towels","ppu":84.38,"uom":""},
@@ -65,12 +106,11 @@ const CATALOG = [
 ];
 
 /* ---------- APP ---------- */
-
 export default function App() {
   const [query, setQuery] = useState("");
-  const [requester, setRequester] = useState("");         // optional now
+  const [requester, setRequester] = useState("");           // optional
   const [notes, setNotes] = useState("");
-  const [specialRequest, setSpecialRequest] = useState(""); // new bottom field
+  const [specialRequest, setSpecialRequest] = useState(""); // optional bottom field
   const [qty, setQty] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(null);
@@ -78,11 +118,10 @@ export default function App() {
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
     const data = q
-      ? CATALOG.filter(
-          i =>
-            i.name.toLowerCase().includes(q) ||
-            (i.itemNumber || "").toLowerCase().includes(q) ||
-            (i.supplier || "").toLowerCase().includes(q)
+      ? CATALOG.filter(i =>
+          i.name.toLowerCase().includes(q) ||
+          (i.itemNumber || "").toLowerCase().includes(q) ||
+          (i.supplier || "").toLowerCase().includes(q)
         )
       : CATALOG.slice();
 
@@ -93,7 +132,6 @@ export default function App() {
       if (ao !== bo) return ao - bo;
       return a.name.localeCompare(b.name);
     });
-
     return data;
   }, [query]);
 
@@ -105,14 +143,17 @@ export default function App() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    // Name is optional now, so no requester check.
-    const orderLines = CATALOG.filter(i => Number(qty[i.itemNumber + i.name]) > 0).map(i => ({
-      supplier: i.supplier,
-      itemNumber: i.itemNumber,
-      name: i.name,
-      ppu: i.ppu,
-      quantity: Number(qty[i.itemNumber + i.name])
-    }));
+
+    const orderLines = CATALOG
+      .filter(i => Number(qty[i.itemNumber + i.name]) > 0)
+      .map(i => ({
+        supplier: i.supplier,
+        itemNumber: i.itemNumber,
+        name: i.name,
+        ppu: i.ppu,
+        quantity: Number(qty[i.itemNumber + i.name])
+      }));
+
     if (orderLines.length === 0) {
       alert("Add at least one quantity");
       return;
@@ -140,50 +181,55 @@ export default function App() {
       setSubmitting(false);
     }
   }
-  
-    return (
-  <div style={{ minHeight: "100vh", width: "100%", background: "#f7f7f7", display: "flex" }}>
-    <div style={{ width: "100%", maxWidth: 1000, margin: "0 auto", padding: 24 }}>
 
+  return (
+    <div style={{
+      minHeight: "100vh",
+      width: "100%",
+      background: COLORS.bg,
+      color: COLORS.text,
+      display: "flex"
+    }}>
+      <div style={{ width: "100%", maxWidth: 1000, margin: "0 auto", padding: 24 }}>
+        {/* Header image + title */}
         <img
           src={HEADER_IMAGE}
-          alt="Housekeeping"
-          style={{ display: "block", margin: "0 auto 16px", maxWidth: 240, width: "100%", height: "auto", borderRadius: 12 }}
+          alt="WhiteSands"
+          style={{ display: "block", margin: "0 auto 16px", maxWidth: 260, width: "100%", height: "auto" }}
         />
         <h1 style={{ textAlign: "center", margin: "0 0 6px", fontSize: 32, fontWeight: 700 }}>
           Housekeeping Order Form
         </h1>
-        <p style={{ textAlign: "center", margin: "0 0 16px", color: "#666" }}>
+        <p style={{ textAlign: "center", margin: "0 0 16px", color: COLORS.muted }}>
           Type to search. Enter quantities. Submit to email the order.
         </p>
 
         {/* Top inputs */}
         <div style={{ display: "grid", gap: 12, gridTemplateColumns: "1fr 1fr 1fr", marginBottom: 16 }}>
-  <input
-    placeholder="Search item, number, or supplier"
-    value={query}
-    onChange={e => setQuery(e.target.value)}
-    style={{ padding: 12, borderRadius: 10, border: "1px solid #ddd", background: "#fff", color: "#111" }}
-  />
-  <input
-    placeholder="Your name (optional)"
-    value={requester}
-    onChange={e => setRequester(e.target.value)}
-    style={{ padding: 12, borderRadius: 10, border: "1px solid #ddd", background: "#fff", color: "#111" }}
-  />
-  <input
-    placeholder="Notes (optional)"
-    value={notes}
-    onChange={e => setNotes(e.target.value)}
-    style={{ padding: 12, borderRadius: 10, border: "1px solid #ddd", background: "#fff", color: "#111" }}
-  />
-</div>
+          <input
+            placeholder="Search item, number, or supplier"
+            value={query}
+            onChange={e => setQuery(e.target.value)}
+            style={{ padding: 12, borderRadius: 10, border: `1px solid ${COLORS.border}`, background: COLORS.card, color: COLORS.text }}
+          />
+          <input
+            placeholder="Your name (optional)"
+            value={requester}
+            onChange={e => setRequester(e.target.value)}
+            style={{ padding: 12, borderRadius: 10, border: `1px solid ${COLORS.border}`, background: COLORS.card, color: COLORS.text }}
+          />
+          <input
+            placeholder="Notes (optional)"
+            value={notes}
+            onChange={e => setNotes(e.target.value)}
+            style={{ padding: 12, borderRadius: 10, border: `1px solid ${COLORS.border}`, background: COLORS.card, color: COLORS.text }}
+          />
+        </div>
 
-
-        {/* Table */}
-        <div style={{ background: "#fff", borderRadius: 12, boxShadow: "0 2px 10px rgba(0,0,0,0.06)", overflow: "hidden" }}>
+        {/* Table card */}
+        <div style={{ background: COLORS.card, borderRadius: 12, boxShadow: "0 2px 10px rgba(0,0,0,0.06)", overflow: "hidden" }}>
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead style={{ background: "#f2f2f2", fontSize: 14, textAlign: "left" }}>
+            <thead style={{ background: COLORS.thead, fontSize: 14, textAlign: "left", color: COLORS.text }}>
               <tr>
                 <th style={{ padding: 12 }}>Supplier</th>
                 <th style={{ padding: 12 }}>Item</th>
@@ -194,7 +240,7 @@ export default function App() {
             </thead>
             <tbody>
               {filtered.map((i, idx) => (
-                <tr key={idx} style={{ background: idx % 2 ? "#fafafa" : "#fff" }}>
+                <tr key={idx} style={{ background: idx % 2 ? "#f7fbfd" : "#ffffff" }}>
                   <td style={{ padding: 12, whiteSpace: "nowrap" }}>{i.supplier}</td>
                   <td style={{ padding: 12 }}>{i.name}</td>
                   <td style={{ padding: 12, whiteSpace: "nowrap" }}>{i.itemNumber}</td>
@@ -206,8 +252,7 @@ export default function App() {
                       step={1}
                       value={qty[i.itemNumber + i.name] || ""}
                       onChange={e => setQty(q => ({ ...q, [i.itemNumber + i.name]: e.target.value }))}
-                      style={{ padding: 8, width: 100, borderRadius: 8, border: "1px solid #ddd", background: "#fff", color: "#111" }}
-
+                      style={{ padding: 8, width: 100, borderRadius: 8, border: `1px solid ${COLORS.border}`, background: COLORS.card, color: COLORS.text }}
                     />
                   </td>
                 </tr>
@@ -216,22 +261,23 @@ export default function App() {
           </table>
         </div>
 
-        {/* Bottom special request + submit */}
+        {/* Special request */}
         <div style={{ marginTop: 16 }}>
-          <label style={{ display: "block", fontSize: 14, color: "#333", marginBottom: 6 }}>
+          <label style={{ display: "block", fontSize: 14, color: COLORS.text, marginBottom: 6 }}>
             Special request (optional)
           </label>
           <input
             placeholder="Type any special request here"
             value={specialRequest}
             onChange={e => setSpecialRequest(e.target.value)}
-            style={{ padding: 12, borderRadius: 10, border: "1px solid #ddd", width: "100%" }}
+            style={{ padding: 12, borderRadius: 10, border: `1px solid ${COLORS.border}`, width: "100%", background: COLORS.card, color: COLORS.text }}
           />
         </div>
 
+        {/* Footer / Submit */}
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 16 }}>
-          <div style={{ fontSize: 14, color: "#333" }}>
-            Selected items: <strong>{selectedItems.length}</strong> | Est. total: <strong>${estTotal.toFixed(2)}</strong>
+          <div style={{ fontSize: 14, color: COLORS.text }}>
+            Selected: <strong>{selectedItems.length}</strong> | Est. total: <strong>${estTotal.toFixed(2)}</strong>
           </div>
           <button
             onClick={handleSubmit}
@@ -239,10 +285,10 @@ export default function App() {
             style={{
               padding: "10px 16px",
               borderRadius: 10,
-              background: "#111",
+              background: COLORS.button,
               color: "#fff",
               border: "none",
-              opacity: submitting ? 0.6 : 1,
+              opacity: submitting ? 0.65 : 1,
               cursor: submitting ? "not-allowed" : "pointer"
             }}
           >
