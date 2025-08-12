@@ -73,3 +73,40 @@ thead { background: #eef8fa; color: var(--ws-text); }
 /* Utility helpers (optional) */
 .muted { color: var(--ws-muted); }
 .card  { background: var(--ws-card); border: 1px solid var(--ws-border); border-radius: 12px; }
+
+/* --- Responsive layout helpers --- */
+.wrap { max-width: 1000px; margin: 0 auto; padding: 24px; }
+.top-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.table-wrap table { min-width: 720px; } /* keeps columns readable on phones */
+
+/* Mobile tweaks */
+@media (max-width: 640px) {
+  .wrap { padding: 12px; }
+  .top-grid { grid-template-columns: 1fr; }        /* stack inputs */
+  .table-wrap { margin: 0 -12px; padding: 0 12px; }/* full-bleed scroll so nothing is cut off */
+  .submit-bar { flex-direction: column; gap: 10px; align-items: stretch; }
+  .submit-bar button { width: 100%; }
+}
+
+/* Layout helpers used by App.jsx */
+.wrap { max-width: 960px; margin: 0 auto; padding: 24px; }
+.top-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+.table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.table-wrap table { min-width: 720px; }
+
+/* Show table on desktop, cards on mobile */
+.desktop-only { display: block; }
+.mobile-only { display: none; }
+
+@media (max-width: 640px) {
+  .wrap { padding: 12px; }
+  .top-grid { grid-template-columns: 1fr; }
+  .table-wrap table { min-width: 600px; }   /* narrower if you want */
+  .desktop-only { display: none; }
+  .mobile-only { display: block; }
+  .submit-bar { flex-direction: column; gap: 10px; align-items: stretch; }
+  .submit-bar button { width: 100%; }
+}
+

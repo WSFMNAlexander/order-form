@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 
 /* ---------- THEME ---------- */
-const HEADER_IMAGE = "/order-header.jpg"; // place your logo/image in /public/order-header.jpg
+const HEADER_IMAGE = "/order-header.jpg";
 const COLORS = {
   bg: "#d9f2f4",
   text: "#02273f",
@@ -15,10 +15,8 @@ const COLORS = {
 /* ---------- SUPPLIER ORDER ---------- */
 const SUPPLIER_ORDER = ["Sysco", "Office Supply", "HD Supply", "Amazon", "Other"];
 
-/* ---------- CATALOG (complete) ---------- */
-// Prices are numbers (no $). Quotes/inch symbols avoided in names to prevent syntax issues.
+/* ---------- CATALOG (your full list) ---------- */
 const CATALOG = [
-  // Sysco (original base)
   {"supplier":"Sysco","itemNumber":"8461087","name":"Gallon Dish Soap 4/1G","ppu":37.53,"uom":""},
   {"supplier":"Sysco","itemNumber":"7932785","name":"Foam Bowls","ppu":31.70,"uom":""},
   {"supplier":"Sysco","itemNumber":"7551308","name":"To Go Food Containers (150)","ppu":19.54,"uom":""},
@@ -62,7 +60,6 @@ const CATALOG = [
   {"supplier":"Sysco","itemNumber":"3455346","name":"Baking Soda 4/16oz","ppu":22.64,"uom":""},
   {"supplier":"Sysco","itemNumber":"1646020","name":"Carpet Deodorizer 6/14oz","ppu":58.93,"uom":""},
 
-  // Sysco (additional per your list)
   {"supplier":"Sysco","itemNumber":"5718178","name":"Forks Refill","ppu":40.11,"uom":""},
   {"supplier":"Sysco","itemNumber":"5718749","name":"Knives Refill","ppu":40.11,"uom":""},
   {"supplier":"Sysco","itemNumber":"7114241","name":"Spoons Refill","ppu":43.57,"uom":""},
@@ -82,7 +79,7 @@ const CATALOG = [
   {"supplier":"Sysco","itemNumber":"7796313","name":"Office Trash Can Liners 200/23G","ppu":50.37,"uom":""},
   {"supplier":"Sysco","itemNumber":"1298821","name":"Black Trash Can Liner 60 Gallon 100/60G","ppu":43.88,"uom":""},
   {"supplier":"Sysco","itemNumber":"2544510","name":"Hand sanitizer Cartridge 4/750ML","ppu":75.24,"uom":""},
-  {"supplier":"Sysco","itemNumber":"7066238","name":"Hard Surface Wipes 6/200CT","ppu":42.63,"uom":""}, // same itemNumber as Gym Wipes per your list
+  {"supplier":"Sysco","itemNumber":"7066238-2","name":"Hard Surface Wipes 6/200CT","ppu":42.63,"uom":""},
   {"supplier":"Sysco","itemNumber":"7180880","name":"Multi Surface Sanitizer 6/32OZ","ppu":43.46,"uom":""},
   {"supplier":"Sysco","itemNumber":"7682790","name":"Glass Cleaner 4/32OZ","ppu":28.08,"uom":""},
   {"supplier":"Sysco","itemNumber":"6303523","name":"Sponge (Yellow/Green) 1/20CT","ppu":26.18,"uom":""},
@@ -90,14 +87,12 @@ const CATALOG = [
   {"supplier":"Sysco","itemNumber":"2306775","name":"Gloves Large 10/100CT","ppu":58.05,"uom":""},
   {"supplier":"Sysco","itemNumber":"2306753","name":"Gloves Medium 10/100CT","ppu":58.05,"uom":""},
 
-  // Office Supply
   {"supplier":"Office Supply","itemNumber":"ODFN8738593","name":"Diversey BreakDown XC Odor Eliminator 1/2.5L","ppu":111.31,"uom":""},
   {"supplier":"Office Supply","itemNumber":"RAC74035CT","name":"Old English polish 12/12.5OZ","ppu":81.52,"uom":""},
   {"supplier":"Office Supply","itemNumber":"PGC96257","name":"Febreze Air Clean Linen 6/8.8OZ","ppu":21.56,"uom":""},
   {"supplier":"Office Supply","itemNumber":"CLO31036","name":"Clorox Urine Remover 1/128OZ","ppu":67.71,"uom":""},
   {"supplier":"Office Supply","itemNumber":"CLO35417CT","name":"CloroxPro Clean-Up","ppu":64.85,"uom":""},
 
-  // HD Supply
   {"supplier":"HD Supply","itemNumber":"SPA6343","name":"Bath Disinfectant Cleaner-TNT","ppu":63.48,"uom":""},
   {"supplier":"HD Supply","itemNumber":"SPA7116-12","name":"NABC Bathroom Disinfectant Cleaner","ppu":50.52,"uom":""},
   {"supplier":"HD Supply","itemNumber":"REN06131-WB","name":"Renown Natural White 8 in. Controlled Hardwound Paper Towels","ppu":84.38,"uom":""},
@@ -108,9 +103,9 @@ const CATALOG = [
 /* ---------- APP ---------- */
 export default function App() {
   const [query, setQuery] = useState("");
-  const [requester, setRequester] = useState("");            // optional
+  const [requester, setRequester] = useState("");
   const [notes, setNotes] = useState("");
-  const [specialRequest, setSpecialRequest] = useState("");  // optional bottom field
+  const [specialRequest, setSpecialRequest] = useState("");
   const [qty, setQty] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(null);
@@ -143,7 +138,6 @@ export default function App() {
 
   async function handleSubmit(e) {
     e.preventDefault();
-
     const orderLines = CATALOG
       .filter(i => Number(qty[i.itemNumber + i.name]) > 0)
       .map(i => ({
@@ -184,9 +178,7 @@ export default function App() {
 
   return (
     <div style={{ minHeight: "100vh", width: "100%", background: COLORS.bg, color: COLORS.text }}>
-      {/* inner centered wrapper uses CSS class defined in index.css */}
       <div className="wrap">
-        {/* Header image + title */}
         <img
           src={HEADER_IMAGE}
           alt="WhiteSands"
@@ -199,7 +191,7 @@ export default function App() {
           Type to search. Enter quantities. Submit to email the order.
         </p>
 
-        {/* Top inputs (stack on mobile via .top-grid CSS) */}
+        {/* Top inputs */}
         <div className="top-grid">
           <input
             placeholder="Search item, number, or supplier"
@@ -221,8 +213,8 @@ export default function App() {
           />
         </div>
 
-        {/* Table with horizontal scroll on phones */}
-        <div className="table-wrap">
+        {/* Desktop table */}
+        <div className="desktop-only table-wrap">
           <div style={{ background: COLORS.card, borderRadius: 12, boxShadow: "0 2px 10px rgba(0,0,0,0.06)", overflow: "hidden" }}>
             <table>
               <thead style={{ background: COLORS.thead, fontSize: 14, textAlign: "left", color: COLORS.text }}>
@@ -238,7 +230,7 @@ export default function App() {
                 {filtered.map((i, idx) => (
                   <tr key={`${i.itemNumber}-${i.name}-${idx}`} style={{ background: idx % 2 ? "#f7fbfd" : "#ffffff" }}>
                     <td style={{ whiteSpace: "nowrap" }}>{i.supplier}</td>
-                    <td>{i.name}</td>
+                    <td style={{ wordBreak: "break-word" }}>{i.name}</td>
                     <td style={{ whiteSpace: "nowrap" }}>{i.itemNumber}</td>
                     <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>{i.ppu ? `$${i.ppu.toFixed(2)}` : ""}</td>
                     <td>
@@ -258,6 +250,33 @@ export default function App() {
           </div>
         </div>
 
+        {/* Mobile list */}
+        <div className="mobile-only" style={{ display: "none" }}>
+          {filtered.map((i, idx) => (
+            <div
+              key={`${i.itemNumber}-${i.name}-m-${idx}`}
+              style={{ background: COLORS.card, border: `1px solid ${COLORS.border}`, borderRadius: 12, padding: 12, marginBottom: 10 }}
+            >
+              <div style={{ fontWeight: 600, marginBottom: 4 }}>{i.name}</div>
+              <div style={{ fontSize: 13, color: COLORS.muted, marginBottom: 8 }}>
+                {i.supplier} • {i.itemNumber || "No item #"}
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+                <div style={{ fontWeight: 600 }}>{i.ppu ? `$${i.ppu.toFixed(2)}` : ""}</div>
+                <input
+                  type="number"
+                  min={0}
+                  step={1}
+                  placeholder="Qty"
+                  value={qty[i.itemNumber + i.name] || ""}
+                  onChange={e => setQty(q => ({ ...q, [i.itemNumber + i.name]: e.target.value }))}
+                  style={{ padding: 10, width: 120, borderRadius: 8, border: `1px solid ${COLORS.border}`, background: COLORS.card, color: COLORS.text }}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+
         {/* Special request */}
         <div style={{ marginTop: 16 }}>
           <label style={{ display: "block", fontSize: 14, color: COLORS.text, marginBottom: 6 }}>
@@ -271,7 +290,7 @@ export default function App() {
           />
         </div>
 
-        {/* Footer / Submit (becomes vertical on mobile via .submit-bar) */}
+        {/* Footer / Submit */}
         <div className="submit-bar" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 16 }}>
           <div style={{ fontSize: 14, color: COLORS.text }}>
             Selected: <strong>{selectedItems.length}</strong> | Est. total: <strong>${estTotal.toFixed(2)}</strong>
