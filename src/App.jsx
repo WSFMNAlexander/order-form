@@ -158,25 +158,26 @@ export default function App() {
 
         {/* Top inputs */}
         <div style={{ display: "grid", gap: 12, gridTemplateColumns: "1fr 1fr 1fr", marginBottom: 16 }}>
-          <input
-            placeholder="Search item, number, or supplier"
-            value={query}
-            onChange={e => setQuery(e.target.value)}
-            style={{ padding: 12, borderRadius: 10, border: "1px solid #ddd" }}
-          />
-          <input
-            placeholder="Your name (optional)"
-            value={requester}
-            onChange={e => setRequester(e.target.value)}
-            style={{ padding: 12, borderRadius: 10, border: "1px solid #ddd" }}
-          />
-          <input
-            placeholder="Notes (optional)"
-            value={notes}
-            onChange={e => setNotes(e.target.value)}
-            style={{ padding: 12, borderRadius: 10, border: "1px solid #ddd" }}
-          />
-        </div>
+  <input
+    placeholder="Search item, number, or supplier"
+    value={query}
+    onChange={e => setQuery(e.target.value)}
+    style={{ padding: 12, borderRadius: 10, border: "1px solid #ddd", background: "#fff", color: "#111" }}
+  />
+  <input
+    placeholder="Your name (optional)"
+    value={requester}
+    onChange={e => setRequester(e.target.value)}
+    style={{ padding: 12, borderRadius: 10, border: "1px solid #ddd", background: "#fff", color: "#111" }}
+  />
+  <input
+    placeholder="Notes (optional)"
+    value={notes}
+    onChange={e => setNotes(e.target.value)}
+    style={{ padding: 12, borderRadius: 10, border: "1px solid #ddd", background: "#fff", color: "#111" }}
+  />
+</div>
+
 
         {/* Table */}
         <div style={{ background: "#fff", borderRadius: 12, boxShadow: "0 2px 10px rgba(0,0,0,0.06)", overflow: "hidden" }}>
@@ -204,7 +205,8 @@ export default function App() {
                       step={1}
                       value={qty[i.itemNumber + i.name] || ""}
                       onChange={e => setQty(q => ({ ...q, [i.itemNumber + i.name]: e.target.value }))}
-                      style={{ padding: 8, width: 100, borderRadius: 8, border: "1px solid #ddd" }}
+                      style={{ padding: 8, width: 100, borderRadius: 8, border: "1px solid #ddd", background: "#fff", color: "#111" }}
+
                     />
                   </td>
                 </tr>
