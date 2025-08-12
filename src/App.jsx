@@ -138,9 +138,20 @@ export default function App() {
     }
   }
 
-  return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-5xl mx-auto">
+    return (
+  <div style={{ minHeight: '100vh', background: '#f7f7f7', padding: '24px' }}>
+    <img
+  src="/order-header.jpg"
+  alt="Housekeeping"
+  style={{ display: 'block', margin: '0 auto 16px', maxWidth: '240px', width: '100%', height: 'auto', borderRadius: '12px' }}
+/>
+
+<h1 style={{ textAlign: 'center', margin: '0 0 8px' }}>Housekeeping Order Form</h1>
+<p style={{ textAlign: 'center', color: '#666', margin: '0 0 16px' }}>
+  Type to search. Enter quantities. Submit to email the order.
+</p>
+
+    <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
         <h1 className="text-2xl font-semibold mb-2">Housekeeping Order Form</h1>
         <p className="text-sm text-gray-600 mb-4">Type to search. Enter quantities. Submit to email the order.</p>
 
