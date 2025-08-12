@@ -1,6 +1,6 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 
-/* ---------- THEME ---------- */
+/* THEME */
 const HEADER_IMAGE = "/order-header.jpg";
 const COLORS = {
   bg: "#d9f2f4",
@@ -12,10 +12,10 @@ const COLORS = {
   thead: "#eef8fa",
 };
 
-/* ---------- SUPPLIER ORDER ---------- */
+/* SUPPLIER ORDER */
 const SUPPLIER_ORDER = ["Sysco", "Office Supply", "HD Supply", "Amazon", "Other"];
 
-/* ---------- CATALOG (your full list) ---------- */
+/* CATALOG (complete) */
 const CATALOG = [
   {"supplier":"Sysco","itemNumber":"8461087","name":"Gallon Dish Soap 4/1G","ppu":37.53,"uom":""},
   {"supplier":"Sysco","itemNumber":"7932785","name":"Foam Bowls","ppu":31.70,"uom":""},
@@ -100,7 +100,20 @@ const CATALOG = [
   {"supplier":"HD Supply","itemNumber":"SPA6410","name":"Contempo Carpet Spray 12/17OZ","ppu":102.00,"uom":""}
 ];
 
-/* ---------- APP ---------- */
+/* HOOK: mobile detection (no CSS dependence) */
+function useIsMobile(bp = 640) {
+  const [isMobile, setIsMobile] = useState(
+    typeof window !== "undefined" ? window.innerWidth <= bp : false
+  );
+  useEffect(() => {
+    const onResize = () => setIsMobile(window.innerWidth <= bp);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [bp]);
+  return isMobile;
+}
+
+/* APP */
 export default function App() {
   const [query, setQuery] = useState("");
   const [requester, setRequester] = useState("");
@@ -109,6 +122,7 @@ export default function App() {
   const [qty, setQty] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(null);
+  const isMobile = useIsMobile(700); // treat <=700px as mobile
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
@@ -213,69 +227,70 @@ export default function App() {
           />
         </div>
 
-        {/* Desktop table */}
-        <div className="desktop-only table-wrap">
-          <div style={{ background: COLORS.card, borderRadius: 12, boxShadow: "0 2px 10px rgba(0,0,0,0.06)", overflow: "hidden" }}>
-            <table>
-              <thead style={{ background: COLORS.thead, fontSize: 14, textAlign: "left", color: COLORS.text }}>
-                <tr>
-                  <th>Supplier</th>
-                  <th>Item</th>
-                  <th>Item #</th>
-                  <th style={{ textAlign: "right" }}>PPU</th>
-                  <th style={{ width: 120 }}>Qty</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filtered.map((i, idx) => (
-                  <tr key={`${i.itemNumber}-${i.name}-${idx}`} style={{ background: idx % 2 ? "#f7fbfd" : "#ffffff" }}>
-                    <td style={{ whiteSpace: "nowrap" }}>{i.supplier}</td>
-                    <td style={{ wordBreak: "break-word" }}>{i.name}</td>
-                    <td style={{ whiteSpace: "nowrap" }}>{i.itemNumber}</td>
-                    <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>{i.ppu ? `$${i.ppu.toFixed(2)}` : ""}</td>
-                    <td>
-                      <input
-                        type="number"
-                        min={0}
-                        step={1}
-                        value={qty[i.itemNumber + i.name] || ""}
-                        onChange={e => setQty(q => ({ ...q, [i.itemNumber + i.name]: e.target.value }))}
-                        style={{ padding: 8, width: 100, borderRadius: 8, border: `1px solid ${COLORS.border}`, background: COLORS.card, color: COLORS.text }}
-                      />
-                    </td>
+        {/* Desktop: table | Mobile: stacked cards */}
+        {!isMobile ? (
+          <div className="table-wrap">
+            <div style={{ background: COLORS.card, borderRadius: 12, boxShadow: "0 2px 10px rgba(0,0,0,0.06)", overflow: "hidden" }}>
+              <table>
+                <thead style={{ background: COLORS.thead, fontSize: 14, textAlign: "left", color: COLORS.text }}>
+                  <tr>
+                    <th>Supplier</th>
+                    <th>Item</th>
+                    <th>Item #</th>
+                    <th style={{ textAlign: "right" }}>PPU</th>
+                    <th style={{ width: 120 }}>Qty</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Mobile list */}
-        <div className="mobile-only" style={{ display: "none" }}>
-          {filtered.map((i, idx) => (
-            <div
-              key={`${i.itemNumber}-${i.name}-m-${idx}`}
-              style={{ background: COLORS.card, border: `1px solid ${COLORS.border}`, borderRadius: 12, padding: 12, marginBottom: 10 }}
-            >
-              <div style={{ fontWeight: 600, marginBottom: 4 }}>{i.name}</div>
-              <div style={{ fontSize: 13, color: COLORS.muted, marginBottom: 8 }}>
-                {i.supplier} • {i.itemNumber || "No item #"}
-              </div>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
-                <div style={{ fontWeight: 600 }}>{i.ppu ? `$${i.ppu.toFixed(2)}` : ""}</div>
-                <input
-                  type="number"
-                  min={0}
-                  step={1}
-                  placeholder="Qty"
-                  value={qty[i.itemNumber + i.name] || ""}
-                  onChange={e => setQty(q => ({ ...q, [i.itemNumber + i.name]: e.target.value }))}
-                  style={{ padding: 10, width: 120, borderRadius: 8, border: `1px solid ${COLORS.border}`, background: COLORS.card, color: COLORS.text }}
-                />
-              </div>
+                </thead>
+                <tbody>
+                  {filtered.map((i, idx) => (
+                    <tr key={`${i.itemNumber}-${i.name}-${idx}`} style={{ background: idx % 2 ? "#f7fbfd" : "#ffffff" }}>
+                      <td style={{ whiteSpace: "nowrap" }}>{i.supplier}</td>
+                      <td style={{ wordBreak: "break-word" }}>{i.name}</td>
+                      <td style={{ whiteSpace: "nowrap" }}>{i.itemNumber}</td>
+                      <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>{i.ppu ? `$${i.ppu.toFixed(2)}` : ""}</td>
+                      <td>
+                        <input
+                          type="number"
+                          min={0}
+                          step={1}
+                          value={qty[i.itemNumber + i.name] || ""}
+                          onChange={e => setQty(q => ({ ...q, [i.itemNumber + i.name]: e.target.value }))}
+                          style={{ padding: 8, width: 100, borderRadius: 8, border: `1px solid ${COLORS.border}`, background: COLORS.card, color: COLORS.text }}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-          ))}
-        </div>
+          </div>
+        ) : (
+          <div>
+            {filtered.map((i, idx) => (
+              <div
+                key={`${i.itemNumber}-${i.name}-m-${idx}`}
+                style={{ background: COLORS.card, border: `1px solid ${COLORS.border}`, borderRadius: 12, padding: 12, marginBottom: 10 }}
+              >
+                <div style={{ fontWeight: 600, marginBottom: 4 }}>{i.name}</div>
+                <div style={{ fontSize: 13, color: COLORS.muted, marginBottom: 8 }}>
+                  {i.supplier} • {i.itemNumber || "No item #"}
+                </div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
+                  <div style={{ fontWeight: 600 }}>{i.ppu ? `$${i.ppu.toFixed(2)}` : ""}</div>
+                  <input
+                    type="number"
+                    min={0}
+                    step={1}
+                    placeholder="Qty"
+                    value={qty[i.itemNumber + i.name] || ""}
+                    onChange={e => setQty(q => ({ ...q, [i.itemNumber + i.name]: e.target.value }))}
+                    style={{ padding: 10, width: 120, borderRadius: 8, border: `1px solid ${COLORS.border}`, background: COLORS.card, color: COLORS.text }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
         {/* Special request */}
         <div style={{ marginTop: 16 }}>
@@ -291,7 +306,14 @@ export default function App() {
         </div>
 
         {/* Footer / Submit */}
-        <div className="submit-bar" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 16 }}>
+        <div className="submit-bar" style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginTop: 16,
+          gap: 12,
+          flexDirection: isMobile ? "column" : "row"
+        }}>
           <div style={{ fontSize: 14, color: COLORS.text }}>
             Selected: <strong>{selectedItems.length}</strong> | Est. total: <strong>${estTotal.toFixed(2)}</strong>
           </div>
@@ -305,7 +327,8 @@ export default function App() {
               color: "#fff",
               border: "none",
               opacity: submitting ? 0.65 : 1,
-              cursor: submitting ? "not-allowed" : "pointer"
+              cursor: submitting ? "not-allowed" : "pointer",
+              width: isMobile ? "100%" : undefined
             }}
           >
             {submitting ? "Submitting..." : "Submit Order"}
