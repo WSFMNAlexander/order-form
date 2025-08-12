@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 
-/* ---------- THEME (from your logo) ---------- */
-const HEADER_IMAGE = "/order-header.jpg"; // put your logo at /public/order-header.jpg
+/* ---------- THEME ---------- */
+const HEADER_IMAGE = "/order-header.jpg"; // place your logo/image in /public/order-header.jpg
 const COLORS = {
   bg: "#d9f2f4",
   text: "#02273f",
@@ -15,8 +15,8 @@ const COLORS = {
 /* ---------- SUPPLIER ORDER ---------- */
 const SUPPLIER_ORDER = ["Sysco", "Office Supply", "HD Supply", "Amazon", "Other"];
 
-/* ---------- CATALOG (complete list) ---------- */
-// Note: keep prices as numbers (no $). Inch marks are plain text; quotes are avoided.
+/* ---------- CATALOG (complete) ---------- */
+// Prices are numbers (no $). Quotes/inch symbols avoided in names to prevent syntax issues.
 const CATALOG = [
   // Sysco (original base)
   {"supplier":"Sysco","itemNumber":"8461087","name":"Gallon Dish Soap 4/1G","ppu":37.53,"uom":""},
@@ -62,7 +62,7 @@ const CATALOG = [
   {"supplier":"Sysco","itemNumber":"3455346","name":"Baking Soda 4/16oz","ppu":22.64,"uom":""},
   {"supplier":"Sysco","itemNumber":"1646020","name":"Carpet Deodorizer 6/14oz","ppu":58.93,"uom":""},
 
-  // Sysco (your additional items)
+  // Sysco (additional per your list)
   {"supplier":"Sysco","itemNumber":"5718178","name":"Forks Refill","ppu":40.11,"uom":""},
   {"supplier":"Sysco","itemNumber":"5718749","name":"Knives Refill","ppu":40.11,"uom":""},
   {"supplier":"Sysco","itemNumber":"7114241","name":"Spoons Refill","ppu":43.57,"uom":""},
@@ -82,7 +82,7 @@ const CATALOG = [
   {"supplier":"Sysco","itemNumber":"7796313","name":"Office Trash Can Liners 200/23G","ppu":50.37,"uom":""},
   {"supplier":"Sysco","itemNumber":"1298821","name":"Black Trash Can Liner 60 Gallon 100/60G","ppu":43.88,"uom":""},
   {"supplier":"Sysco","itemNumber":"2544510","name":"Hand sanitizer Cartridge 4/750ML","ppu":75.24,"uom":""},
-  {"supplier":"Sysco","itemNumber":"7066238-2","name":"Hard Surface Wipes 6/200CT","ppu":42.63,"uom":""}, // key adjusted to avoid clash
+  {"supplier":"Sysco","itemNumber":"7066238","name":"Hard Surface Wipes 6/200CT","ppu":42.63,"uom":""}, // same itemNumber as Gym Wipes per your list
   {"supplier":"Sysco","itemNumber":"7180880","name":"Multi Surface Sanitizer 6/32OZ","ppu":43.46,"uom":""},
   {"supplier":"Sysco","itemNumber":"7682790","name":"Glass Cleaner 4/32OZ","ppu":28.08,"uom":""},
   {"supplier":"Sysco","itemNumber":"6303523","name":"Sponge (Yellow/Green) 1/20CT","ppu":26.18,"uom":""},
@@ -108,9 +108,9 @@ const CATALOG = [
 /* ---------- APP ---------- */
 export default function App() {
   const [query, setQuery] = useState("");
-  const [requester, setRequester] = useState("");           // optional
+  const [requester, setRequester] = useState("");            // optional
   const [notes, setNotes] = useState("");
-  const [specialRequest, setSpecialRequest] = useState(""); // optional bottom field
+  const [specialRequest, setSpecialRequest] = useState("");  // optional bottom field
   const [qty, setQty] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(null);
@@ -183,14 +183,9 @@ export default function App() {
   }
 
   return (
-    <div style={{
-      minHeight: "100vh",
-      width: "100%",
-      background: COLORS.bg,
-      color: COLORS.text,
-      display: "flex"
-    }}>
-      <div style={{ width: "100%", maxWidth: 1000, margin: "0 auto", padding: 24 }}>
+    <div style={{ minHeight: "100vh", width: "100%", background: COLORS.bg, color: COLORS.text }}>
+      {/* inner centered wrapper uses CSS class defined in index.css */}
+      <div className="wrap">
         {/* Header image + title */}
         <img
           src={HEADER_IMAGE}
@@ -204,8 +199,8 @@ export default function App() {
           Type to search. Enter quantities. Submit to email the order.
         </p>
 
-        {/* Top inputs */}
-        <div style={{ display: "grid", gap: 12, gridTemplateColumns: "1fr 1fr 1fr", marginBottom: 16 }}>
+        {/* Top inputs (stack on mobile via .top-grid CSS) */}
+        <div className="top-grid">
           <input
             placeholder="Search item, number, or supplier"
             value={query}
@@ -226,39 +221,41 @@ export default function App() {
           />
         </div>
 
-        {/* Table card */}
-        <div style={{ background: COLORS.card, borderRadius: 12, boxShadow: "0 2px 10px rgba(0,0,0,0.06)", overflow: "hidden" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead style={{ background: COLORS.thead, fontSize: 14, textAlign: "left", color: COLORS.text }}>
-              <tr>
-                <th style={{ padding: 12 }}>Supplier</th>
-                <th style={{ padding: 12 }}>Item</th>
-                <th style={{ padding: 12 }}>Item #</th>
-                <th style={{ padding: 12, textAlign: "right" }}>PPU</th>
-                <th style={{ padding: 12, width: 120 }}>Qty</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((i, idx) => (
-                <tr key={idx} style={{ background: idx % 2 ? "#f7fbfd" : "#ffffff" }}>
-                  <td style={{ padding: 12, whiteSpace: "nowrap" }}>{i.supplier}</td>
-                  <td style={{ padding: 12 }}>{i.name}</td>
-                  <td style={{ padding: 12, whiteSpace: "nowrap" }}>{i.itemNumber}</td>
-                  <td style={{ padding: 12, textAlign: "right", whiteSpace: "nowrap" }}>{i.ppu ? `$${i.ppu.toFixed(2)}` : ""}</td>
-                  <td style={{ padding: 12 }}>
-                    <input
-                      type="number"
-                      min={0}
-                      step={1}
-                      value={qty[i.itemNumber + i.name] || ""}
-                      onChange={e => setQty(q => ({ ...q, [i.itemNumber + i.name]: e.target.value }))}
-                      style={{ padding: 8, width: 100, borderRadius: 8, border: `1px solid ${COLORS.border}`, background: COLORS.card, color: COLORS.text }}
-                    />
-                  </td>
+        {/* Table with horizontal scroll on phones */}
+        <div className="table-wrap">
+          <div style={{ background: COLORS.card, borderRadius: 12, boxShadow: "0 2px 10px rgba(0,0,0,0.06)", overflow: "hidden" }}>
+            <table>
+              <thead style={{ background: COLORS.thead, fontSize: 14, textAlign: "left", color: COLORS.text }}>
+                <tr>
+                  <th>Supplier</th>
+                  <th>Item</th>
+                  <th>Item #</th>
+                  <th style={{ textAlign: "right" }}>PPU</th>
+                  <th style={{ width: 120 }}>Qty</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {filtered.map((i, idx) => (
+                  <tr key={`${i.itemNumber}-${i.name}-${idx}`} style={{ background: idx % 2 ? "#f7fbfd" : "#ffffff" }}>
+                    <td style={{ whiteSpace: "nowrap" }}>{i.supplier}</td>
+                    <td>{i.name}</td>
+                    <td style={{ whiteSpace: "nowrap" }}>{i.itemNumber}</td>
+                    <td style={{ textAlign: "right", whiteSpace: "nowrap" }}>{i.ppu ? `$${i.ppu.toFixed(2)}` : ""}</td>
+                    <td>
+                      <input
+                        type="number"
+                        min={0}
+                        step={1}
+                        value={qty[i.itemNumber + i.name] || ""}
+                        onChange={e => setQty(q => ({ ...q, [i.itemNumber + i.name]: e.target.value }))}
+                        style={{ padding: 8, width: 100, borderRadius: 8, border: `1px solid ${COLORS.border}`, background: COLORS.card, color: COLORS.text }}
+                      />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* Special request */}
@@ -274,8 +271,8 @@ export default function App() {
           />
         </div>
 
-        {/* Footer / Submit */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 16 }}>
+        {/* Footer / Submit (becomes vertical on mobile via .submit-bar) */}
+        <div className="submit-bar" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 16 }}>
           <div style={{ fontSize: 14, color: COLORS.text }}>
             Selected: <strong>{selectedItems.length}</strong> | Est. total: <strong>${estTotal.toFixed(2)}</strong>
           </div>
