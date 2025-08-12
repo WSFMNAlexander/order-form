@@ -1,11 +1,12 @@
 import React, { useMemo, useState } from "react";
 
-// ----- CONFIG -----
-// 1) Your email will be set on the server (see netlify function below)
-// 2) If you want to hard-limit which suppliers show first, adjust order here
-const SUPPLIER_ORDER = ["Sysco", "Office Supply", "HD Supply", "Amazon", "Other"];
+/* ---------- CONFIG ---------- */
 
-// 3) Item catalog — generated from your Excel. You can also fetch this from /items.json
+const SUPPLIER_ORDER = ["Sysco", "Office Supply", "HD Supply", "Amazon", "Other"];
+const HEADER_IMAGE = "/order-header.jpg";
+
+// Catalog with the last entries replaced by what you sent.
+// Note: inch marks in two earlier items use "in" to avoid string issues.
 const CATALOG = [
   {"supplier":"Sysco","itemNumber":"8461087","name":"Gallon Dish Soap 4/1G","ppu":37.53,"uom":""},
   {"supplier":"Sysco","itemNumber":"7932785","name":"Foam Bowls","ppu":31.7,"uom":""},
@@ -23,8 +24,8 @@ const CATALOG = [
   {"supplier":"Sysco","itemNumber":"7670118","name":"Dish Detergent","ppu":73.88,"uom":""},
   {"supplier":"Sysco","itemNumber":"8732146","name":"Dishwasher Machine Detergent","ppu":103.73,"uom":""},
   {"supplier":"Sysco","itemNumber":"5115710","name":"Green Scrub Pads","ppu":18.42,"uom":""},
- {"supplier":"Sysco","itemNumber":"1257620","name":"Plastic Wrap 24in","ppu":20.52,"uom":""},
-{"supplier":"Sysco","itemNumber":"4401877","name":"Foil 18in","ppu":49.17,"uom":""},
+  {"supplier":"Sysco","itemNumber":"1257620","name":"Plastic Wrap 24in","ppu":20.52,"uom":""},
+  {"supplier":"Sysco","itemNumber":"4401877","name":"Foil 18in","ppu":49.17,"uom":""},
   {"supplier":"Sysco","itemNumber":"5844165","name":"Clorox Wipes 5/85CT","ppu":83.72,"uom":""},
   {"supplier":"Sysco","itemNumber":"2324915","name":"Laundry Detergent","ppu":68.83,"uom":""},
   {"supplier":"Sysco","itemNumber":"8777301","name":"Fabric Softener","ppu":92.04,"uom":""},
@@ -49,21 +50,27 @@ const CATALOG = [
   {"supplier":"Sysco","itemNumber":"1207539","name":"Mr Clean","ppu":74.93,"uom":""},
   {"supplier":"Sysco","itemNumber":"3455346","name":"Baking Soda 4/16oz","ppu":22.64,"uom":""},
   {"supplier":"Sysco","itemNumber":"1646020","name":"Carpet Deodorizer 6/14oz","ppu":58.93,"uom":""},
-  {"supplier":"Office Supply","itemNumber":"ODFN8738593","name":"Paper","ppu":null,"uom":""},
-  {"supplier":"Office Supply","itemNumber":"","name":"Pens","ppu":null,"uom":""},
-  {"supplier":"Office Supply","itemNumber":"","name":"Sharpies","ppu":null,"uom":""},
-  {"supplier":"Office Supply","itemNumber":"","name":"Dry Erase Markers","ppu":null,"uom":""},
-  {"supplier":"Office Supply","itemNumber":"","name":"Sticky Notes","ppu":null,"uom":""},
-  {"supplier":"HD Supply","itemNumber":"","name":"Toilet Plunger","ppu":null,"uom":""},
-  {"supplier":"HD Supply","itemNumber":"","name":"Small Dust Pan","ppu":null,"uom":""},
-  {"supplier":"HD Supply","itemNumber":"","name":"Stuff on other sheet?","ppu":null,"uom":""}
+
+  // New Office Supply and HD Supply items
+  {"supplier":"Office Supply","itemNumber":"ODFN8738593","name":"Diversey BreakDown XC Odor Eliminator 1/2.5L","ppu":111.31,"uom":""},
+  {"supplier":"Office Supply","itemNumber":"RAC74035CT","name":"Old English polish 12/12.5OZ","ppu":81.52,"uom":""},
+  {"supplier":"Office Supply","itemNumber":"PGC96257","name":"Febreze Air Clean Linen 6/8.8OZ","ppu":21.56,"uom":""},
+  {"supplier":"Office Supply","itemNumber":"CLO31036","name":"Clorox Urine Remover 1/128OZ","ppu":67.71,"uom":""},
+  {"supplier":"Office Supply","itemNumber":"CLO35417CT","name":"CloroxPro Clean-Up","ppu":64.85,"uom":""},
+  {"supplier":"HD Supply","itemNumber":"SPA6343","name":"Bath Disinfectant Cleaner-TNT","ppu":63.48,"uom":""},
+  {"supplier":"HD Supply","itemNumber":"SPA7116-12","name":"NABC Bathroom Disinfectant Cleaner","ppu":50.52,"uom":""},
+  {"supplier":"HD Supply","itemNumber":"REN06131-WB","name":"Renown Natural White 8 in. Controlled Hardwound Paper Towels","ppu":84.38,"uom":""},
+  {"supplier":"HD Supply","itemNumber":"SPA3210-12","name":"CDC-10 4/1G","ppu":64.56,"uom":""},
+  {"supplier":"HD Supply","itemNumber":"SPA6410","name":"Contempo Carpet Spray 12/17OZ","ppu":102.00,"uom":""}
 ];
 
-// ----- UI COMPONENT -----
+/* ---------- APP ---------- */
+
 export default function App() {
   const [query, setQuery] = useState("");
-  const [requester, setRequester] = useState("");
+  const [requester, setRequester] = useState("");         // optional now
   const [notes, setNotes] = useState("");
+  const [specialRequest, setSpecialRequest] = useState(""); // new bottom field
   const [qty, setQty] = useState({});
   const [submitting, setSubmitting] = useState(false);
   const [sent, setSent] = useState(null);
@@ -72,14 +79,13 @@ export default function App() {
     const q = query.trim().toLowerCase();
     const data = q
       ? CATALOG.filter(
-          (i) =>
+          i =>
             i.name.toLowerCase().includes(q) ||
             (i.itemNumber || "").toLowerCase().includes(q) ||
             (i.supplier || "").toLowerCase().includes(q)
         )
       : CATALOG.slice();
 
-    // group by supplier with a stable order
     const orderMap = new Map(SUPPLIER_ORDER.map((s, idx) => [s, idx]));
     data.sort((a, b) => {
       const ao = orderMap.has(a.supplier) ? orderMap.get(a.supplier) : 999;
@@ -91,27 +97,22 @@ export default function App() {
     return data;
   }, [query]);
 
-  const selectedItems = filtered.filter((i) => Number(qty[i.itemNumber + i.name]) > 0);
+  const selectedItems = CATALOG.filter(i => Number(qty[i.itemNumber + i.name]) > 0);
   const estTotal = selectedItems.reduce((sum, i) => {
-    const q = Number(qty[i.itemNumber + i.name]) || 0;
-    return sum + (i.ppu ? i.ppu * q : 0);
+    const qn = Number(qty[i.itemNumber + i.name]) || 0;
+    return sum + (i.ppu ? i.ppu * qn : 0);
   }, 0);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    if (!requester) {
-      alert("Enter your name");
-      return;
-    }
-    const orderLines = CATALOG.filter((i) => Number(qty[i.itemNumber + i.name]) > 0).map(
-      (i) => ({
-        supplier: i.supplier,
-        itemNumber: i.itemNumber,
-        name: i.name,
-        ppu: i.ppu,
-        quantity: Number(qty[i.itemNumber + i.name])
-      })
-    );
+    // Name is optional now, so no requester check.
+    const orderLines = CATALOG.filter(i => Number(qty[i.itemNumber + i.name]) > 0).map(i => ({
+      supplier: i.supplier,
+      itemNumber: i.itemNumber,
+      name: i.name,
+      ppu: i.ppu,
+      quantity: Number(qty[i.itemNumber + i.name])
+    }));
     if (orderLines.length === 0) {
       alert("Add at least one quantity");
       return;
@@ -123,13 +124,15 @@ export default function App() {
       const res = await fetch("/.netlify/functions/send-order", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ requester, notes, orderLines })
+        body: JSON.stringify({ requester, notes, specialRequest, orderLines })
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Failed to submit");
       setSent("ok");
       setQty({});
       setNotes("");
+      setSpecialRequest("");
+      setRequester("");
     } catch (err) {
       console.error(err);
       setSent(err.message || "error");
@@ -138,72 +141,70 @@ export default function App() {
     }
   }
 
-    return (
-  <div style={{ minHeight: '100vh', background: '#f7f7f7', padding: '24px' }}>
-    <img
-  src="/order-header.jpg"
-  alt="Housekeeping"
-  style={{ display: 'block', margin: '0 auto 16px', maxWidth: '240px', width: '100%', height: 'auto', borderRadius: '12px' }}
-/>
+  return (
+    <div style={{ minHeight: "100vh", width: "100%", background: "#f7f7f7" }}>
+      <div style={{ maxWidth: 1000, margin: "0 auto", padding: 24 }}>
+        <img
+          src={HEADER_IMAGE}
+          alt="Housekeeping"
+          style={{ display: "block", margin: "0 auto 16px", maxWidth: 240, width: "100%", height: "auto", borderRadius: 12 }}
+        />
+        <h1 style={{ textAlign: "center", margin: "0 0 6px", fontSize: 32, fontWeight: 700 }}>
+          Housekeeping Order Form
+        </h1>
+        <p style={{ textAlign: "center", margin: "0 0 16px", color: "#666" }}>
+          Type to search. Enter quantities. Submit to email the order.
+        </p>
 
-<h1 style={{ textAlign: 'center', margin: '0 0 8px' }}>Housekeeping Order Form</h1>
-<p style={{ textAlign: 'center', color: '#666', margin: '0 0 16px' }}>
-  Type to search. Enter quantities. Submit to email the order.
-</p>
-
-    <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
-        <h1 className="text-2xl font-semibold mb-2">Housekeeping Order Form</h1>
-        <p className="text-sm text-gray-600 mb-4">Type to search. Enter quantities. Submit to email the order.</p>
-
-        <div className="grid gap-3 md:grid-cols-3 mb-4">
+        {/* Top inputs */}
+        <div style={{ display: "grid", gap: 12, gridTemplateColumns: "1fr 1fr 1fr", marginBottom: 16 }}>
           <input
-            className="border rounded-xl p-3 w-full"
             placeholder="Search item, number, or supplier"
             value={query}
-            onChange={(e) => setQuery(e.target.value)}
+            onChange={e => setQuery(e.target.value)}
+            style={{ padding: 12, borderRadius: 10, border: "1px solid #ddd" }}
           />
           <input
-            className="border rounded-xl p-3 w-full"
-            placeholder="Your name"
+            placeholder="Your name (optional)"
             value={requester}
-            onChange={(e) => setRequester(e.target.value)}
+            onChange={e => setRequester(e.target.value)}
+            style={{ padding: 12, borderRadius: 10, border: "1px solid #ddd" }}
           />
           <input
-            className="border rounded-xl p-3 w-full"
             placeholder="Notes (optional)"
             value={notes}
-            onChange={(e) => setNotes(e.target.value)}
+            onChange={e => setNotes(e.target.value)}
+            style={{ padding: 12, borderRadius: 10, border: "1px solid #ddd" }}
           />
         </div>
 
-        <div className="bg-white shadow rounded-2xl overflow-hidden">
-          <table className="w-full">
-            <thead className="bg-gray-100 text-left text-sm">
+        {/* Table */}
+        <div style={{ background: "#fff", borderRadius: 12, boxShadow: "0 2px 10px rgba(0,0,0,0.06)", overflow: "hidden" }}>
+          <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <thead style={{ background: "#f2f2f2", fontSize: 14, textAlign: "left" }}>
               <tr>
-                <th className="p-3">Supplier</th>
-                <th className="p-3">Item</th>
-                <th className="p-3">Item #</th>
-                <th className="p-3">PPU</th>
-                <th className="p-3 w-28">Qty</th>
+                <th style={{ padding: 12 }}>Supplier</th>
+                <th style={{ padding: 12 }}>Item</th>
+                <th style={{ padding: 12 }}>Item #</th>
+                <th style={{ padding: 12, textAlign: "right" }}>PPU</th>
+                <th style={{ padding: 12, width: 120 }}>Qty</th>
               </tr>
             </thead>
             <tbody>
               {filtered.map((i, idx) => (
-                <tr key={idx} className={idx % 2 ? "bg-gray-50" : undefined}>
-                  <td className="p-3 whitespace-nowrap">{i.supplier}</td>
-                  <td className="p-3">{i.name}</td>
-                  <td className="p-3 whitespace-nowrap">{i.itemNumber}</td>
-                  <td className="p-3 whitespace-nowrap">{i.ppu ? `$${i.ppu.toFixed(2)}` : "—"}</td>
-                  <td className="p-3">
+                <tr key={idx} style={{ background: idx % 2 ? "#fafafa" : "#fff" }}>
+                  <td style={{ padding: 12, whiteSpace: "nowrap" }}>{i.supplier}</td>
+                  <td style={{ padding: 12 }}>{i.name}</td>
+                  <td style={{ padding: 12, whiteSpace: "nowrap" }}>{i.itemNumber}</td>
+                  <td style={{ padding: 12, textAlign: "right", whiteSpace: "nowrap" }}>{i.ppu ? `$${i.ppu.toFixed(2)}` : ""}</td>
+                  <td style={{ padding: 12 }}>
                     <input
                       type="number"
                       min={0}
                       step={1}
-                      className="border rounded-lg p-2 w-24"
                       value={qty[i.itemNumber + i.name] || ""}
-                      onChange={(e) =>
-                        setQty((q) => ({ ...q, [i.itemNumber + i.name]: e.target.value }))
-                      }
+                      onChange={e => setQty(q => ({ ...q, [i.itemNumber + i.name]: e.target.value }))}
+                      style={{ padding: 8, width: 100, borderRadius: 8, border: "1px solid #ddd" }}
                     />
                   </td>
                 </tr>
@@ -212,35 +213,46 @@ export default function App() {
           </table>
         </div>
 
-        <div className="flex items-center justify-between mt-4">
-          <div className="text-sm text-gray-700">
-            Selected items: <strong>{selectedItems.length}</strong>{" "}
-            | Est. total: <strong>${estTotal.toFixed(2)}</strong>
+        {/* Bottom special request + submit */}
+        <div style={{ marginTop: 16 }}>
+          <label style={{ display: "block", fontSize: 14, color: "#333", marginBottom: 6 }}>
+            Special request (optional)
+          </label>
+          <input
+            placeholder="Type any special request here"
+            value={specialRequest}
+            onChange={e => setSpecialRequest(e.target.value)}
+            style={{ padding: 12, borderRadius: 10, border: "1px solid #ddd", width: "100%" }}
+          />
+        </div>
+
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: 16 }}>
+          <div style={{ fontSize: 14, color: "#333" }}>
+            Selected items: <strong>{selectedItems.length}</strong> | Est. total: <strong>${estTotal.toFixed(2)}</strong>
           </div>
           <button
             onClick={handleSubmit}
             disabled={submitting}
-            className="px-5 py-3 rounded-xl bg-black text-white shadow disabled:opacity-50"
+            style={{
+              padding: "10px 16px",
+              borderRadius: 10,
+              background: "#111",
+              color: "#fff",
+              border: "none",
+              opacity: submitting ? 0.6 : 1,
+              cursor: submitting ? "not-allowed" : "pointer"
+            }}
           >
             {submitting ? "Submitting..." : "Submit Order"}
           </button>
         </div>
 
         {sent && (
-          <div className={`mt-3 text-sm ${sent === "ok" ? "text-green-700" : "text-red-700"}`}>
+          <div style={{ marginTop: 10, fontSize: 14, color: sent === "ok" ? "#137333" : "#b00020" }}>
             {sent === "ok" ? "Order sent. Check your email." : `Error: ${sent}`}
           </div>
         )}
-
-        <details className="mt-6">
-          <summary className="cursor-pointer text-sm text-gray-600">What gets emailed?</summary>
-          <pre className="bg-gray-900 text-gray-100 p-4 rounded-xl overflow-x-auto text-sm">
-{`Requester: <your name>\nNotes: <optional>\n\nSupplier | Item # | Item | Qty | PPU | Line Total\n...\n\nCSV attachment included.`}
-          </pre>
-        </details>
       </div>
     </div>
   );
 }
-
-
