@@ -140,10 +140,11 @@ export default function App() {
       setSubmitting(false);
     }
   }
+  
+    return (
+  <div style={{ minHeight: "100vh", width: "100%", background: "#f7f7f7", display: "flex" }}>
+    <div style={{ width: "100%", maxWidth: 1000, margin: "0 auto", padding: 24 }}>
 
-  return (
-    <div style={{ minHeight: "100vh", width: "100%", background: "#f7f7f7" }}>
-      <div style={{ maxWidth: 1000, margin: "0 auto", padding: 24 }}>
         <img
           src={HEADER_IMAGE}
           alt="Housekeeping"
