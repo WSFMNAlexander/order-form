@@ -1,71 +1,75 @@
+/* WhiteSands theme — full CSS */
+
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+  /* Colors from your logo */
+  --ws-bg:    #d9f2f4;  /* light blue */
+  --ws-text:  #02273f;  /* dark blue */
+  --ws-card:  #ffffff;  /* white */
+  --ws-border:#bfe4ea;  /* subtle border */
+  --ws-muted: #35566a;  /* secondary text */
+  --ws-button:#02273f;  /* button bg */
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  /* Force light controls even if OS is dark */
+  color-scheme: light;
+}
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
+/* Page background must cover the whole scroll */
+html { background: var(--ws-bg); }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ws-bg);
+  color: var(--ws-text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, Helvetica, sans-serif;
+  line-height: 1.4;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+#root { min-height: 100vh; }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
+/* Layout basics */
+*,
+*::before,
+*::after { box-sizing: border-box; }
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
+img { display: block; max-width: 100%; height: auto; }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+/* Forms */
+input, button, select, textarea {
+  font: inherit;
+  color: var(--ws-text);
+  background: var(--ws-card);
+  border: 1px solid var(--ws-border);
+  border-radius: 10px;
 }
+input, select, textarea { padding: 10px 12px; }
 
 button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  background: var(--ws-button);
+  color: #fff;
   cursor: pointer;
-  transition: border-color 0.25s;
 }
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+button[disabled] { opacity: 0.65; cursor: not-allowed; }
+
+/* Remove number spinners where possible */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+input[type="number"] { -moz-appearance: textfield; }
+
+/* Focus visibility */
+:focus-visible {
+  outline: 2px solid #03aab9; /* teal from logo */
+  outline-offset: 2px;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
-}
-html, body, #root { height: 100%; }
-body { margin: 0; background: #f7f7f7; color: #111; }
+/* Tables */
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 12px; vertical-align: middle; }
+thead { background: #eef8fa; color: var(--ws-text); }
 
+/* Utility helpers (optional) */
+.muted { color: var(--ws-muted); }
+.card  { background: var(--ws-card); border: 1px solid var(--ws-border); border-radius: 12px; }
