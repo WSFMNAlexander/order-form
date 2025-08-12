@@ -40,3 +40,7 @@
 .read-the-docs {
   color: #888;
 }
+html, body, #root { height: 100%; }
+body { margin: 0; background: #d9f2f4; color: #02273f; }
+* { box-sizing: border-box; }
+
