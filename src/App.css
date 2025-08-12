@@ -1,46 +1,105 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* WhiteSands theme — sitewide base styles */
+:root {
+  /* Colors pulled from your logo */
+  --ws-bg:    #d9f2f4;  /* light blue */
+  --ws-text:  #02273f;  /* dark blue */
+  --ws-card:  #ffffff;  /* white */
+  --ws-border:#bfe4ea;  /* subtle blue border */
+  --ws-muted: #35566a;  /* secondary text */
+  --ws-button:#02273f;  /* button bg */
+
+  /* Prefer light form controls even if the OS is in dark mode */
+  color-scheme: light;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+html, body, #root {
+  height: 100%;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+body {
+  margin: 0;
+  background: var(--ws-bg);
+  color: var(--ws-text);
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, Helvetica, sans-serif;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.card {
-  padding: 2em;
+/* Make images behave */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
 
-.read-the-docs {
-  color: #888;
+/* Inputs and buttons: consistent light look */
+input, button, select, textarea {
+  font: inherit;
+  color: var(--ws-text);
+  background: var(--ws-card);
+  border: 1px solid var(--ws-border);
+  border-radius: 10px;
 }
-html, body, #root { height: 100%; }
-body { margin: 0; background: #d9f2f4; color: #02273f; }
-* { box-sizing: border-box; }
+
+input, select, textarea {
+  padding: 10px 12px;
+}
+
+button {
+  padding: 10px 16px;
+  border-radius: 10px;
+  border: none;
+  background: var(--ws-button);
+  color: #fff;
+  cursor: pointer;
+}
+
+button[disabled] {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Clear default input number spinners in some browsers (optional) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Accessible focus styles */
+:focus-visible {
+  outline: 2px solid #03aab9; /* teal from logo */
+  outline-offset: 2px;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px;
+  vertical-align: middle;
+}
+
+thead {
+  background: #eef8fa;
+  color: var(--ws-text);
+}
+
+/* Utility (optional) */
+.muted { color: var(--ws-muted); }
+.card  { background: var(--ws-card); border: 1px solid var(--ws-border); border-radius: 12px; }
+
 
