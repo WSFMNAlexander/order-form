@@ -1,7 +1,8 @@
 import React, { useMemo, useState, useEffect } from "react";
 
 /* THEME */
-const HEADER_IMAGE = "/order-header.jpg";
+// top of file
+const HEADER_IMAGE = "/WS%20Logo%20Original%20(2).png";
 const COLORS = {
   bg: "#d9f2f4",
   text: "#02273f",
