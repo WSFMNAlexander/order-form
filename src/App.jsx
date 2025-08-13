@@ -215,7 +215,7 @@ export default function App() {
             style={{ padding: 12, borderRadius: 10, border: `1px solid ${COLORS.border}`, background: COLORS.card, color: COLORS.text }}
           />
           <input
-            placeholder="Your name (optional)"
+            placeholder="Please enter your name"
             value={requester}
             onChange={e => setRequester(e.target.value)}
             style={{ padding: 12, borderRadius: 10, border: `1px solid ${COLORS.border}`, background: COLORS.card, color: COLORS.text }}
