@@ -68,7 +68,6 @@ const CATALOG = [
   {"supplier":"Sysco","itemNumber":"7335194","name":"Hand Sanitizer 1/1L","ppu":16.03,"uom":""},
   {"supplier":"Sysco","itemNumber":"4294924","name":"Hand Soap Cartridge 41150ML","ppu":157.86,"uom":""},
   {"supplier":"Sysco","itemNumber":"2125421","name":"Baking Soda 24/16OZ","ppu":27.98,"uom":""},
-  {"supplier":"Sysco","itemNumber":"5026234","name":"Hand Soap bottle Refill 4/1G","ppu":188.02,"uom":""},
   {"supplier":"Sysco","itemNumber":"7074078","name":"Liquid Bleach Cleaning Spray 4/32OZ","ppu":31.17,"uom":""},
   {"supplier":"Sysco","itemNumber":"7863540","name":"Reclosable Bag Quart Size 1/500CT","ppu":26.06,"uom":""},
   {"supplier":"Sysco","itemNumber":"7863634","name":"Reclosable Bag Gallon Size 1/250CT","ppu":24.63,"uom":""},
@@ -99,6 +98,7 @@ const CATALOG = [
   {"supplier":"HD Supply","itemNumber":"REN06131-WB","name":"Renown Natural White 8 in. Controlled Hardwound Paper Towels","ppu":84.38,"uom":""},
   {"supplier":"HD Supply","itemNumber":"SPA3210-12","name":"CDC-10 4/1G","ppu":64.56,"uom":""},
   {"supplier":"HD Supply","itemNumber":"SPA6410","name":"Contempo Carpet Spray 12/17OZ","ppu":102.00,"uom":""}
+  {"supplier":"HD Supply","itemNumber":"APP17100-04","name":"Appeal Hand Soap Cartridge 4/1L","ppu":46.68,"uom":""},
 ];
 
 /* HOOK: mobile detection (no CSS dependence) */
