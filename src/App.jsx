@@ -28,7 +28,7 @@ const CATALOG = [
   {"supplier":"Sysco","itemNumber":"4458784","name":"Toilet Paper 80/550CT","ppu":44.15,"uom":""},
   {"supplier":"Sysco","itemNumber":"900721","name":"Reusable Cotton Kitchen Towel 1/12CT","ppu":13.65,"uom":""},
   {"supplier":"Sysco","itemNumber":"5256670","name":"Sanitizer Tablet Tab 100 Count","ppu":41.77,"uom":""},
-  {"supplier":"Sysco","itemNumber":"9868688","name":"Paper Towel Multifold","ppu":26.09,"uom":""},
+  {"supplier":"Sysco","itemNumber":"4458693","name":"Paper Towel Multifold","ppu":26.09,"uom":""},
   {"supplier":"Sysco","itemNumber":"7155180","name":"Facial Tissues","ppu":52.84,"uom":""},
   {"supplier":"Sysco","itemNumber":"5793831","name":"Stainless Steel Scrub Pad","ppu":56.27,"uom":""},
   {"supplier":"Sysco","itemNumber":"7681341","name":"Dish Detergent","ppu":43.20,"uom":""},
