@@ -18,7 +18,7 @@ const SUPPLIER_ORDER = ["Sysco", "Office Supply", "HD Supply", "Amazon", "Other"
 
 /* CATALOG (complete) */
 const CATALOG = [
-  {"supplier":"Sysco","itemNumber":"8461087","name":"Gallon Dish Soap 4/1G","ppu":37.53,"uom":""},
+  {"supplier":"Sysco","itemNumber":"7681341","name":"Gallon Dish Soap 4/1G","ppu":43.20,"uom":""},
   {"supplier":"Sysco","itemNumber":"7932785","name":"Foam Bowls","ppu":31.70,"uom":""},
   {"supplier":"Sysco","itemNumber":"7551308","name":"To Go Food Containers (150)","ppu":19.54,"uom":""},
   {"supplier":"Sysco","itemNumber":"4088829","name":"8oz Foam Cups","ppu":22.81,"uom":""},
@@ -26,7 +26,7 @@ const CATALOG = [
   {"supplier":"Sysco","itemNumber":"1933074","name":"Bleach 6/1G","ppu":24.82,"uom":""},
   {"supplier":"Sysco","itemNumber":"4458646","name":"Kitchen Paper Towel Roll 30/85CT","ppu":40.89,"uom":""},
   {"supplier":"Sysco","itemNumber":"4458784","name":"Toilet Paper 80/550CT","ppu":44.15,"uom":""},
-  {"supplier":"Sysco","itemNumber":"900721","name":"Reusable Cotton Kitchen Towel 1/12CT","ppu":13.65,"uom":""},
+  {"supplier":"Sysco","itemNumber":"7094050","name":"Reusable Cotton Kitchen Towel 1/12CT","ppu":23.76,"uom":""},
   {"supplier":"Sysco","itemNumber":"5256670","name":"Sanitizer Tablet Tab 100 Count","ppu":41.77,"uom":""},
   {"supplier":"Sysco","itemNumber":"4458693","name":"Paper Towel Multifold","ppu":26.09,"uom":""},
   {"supplier":"Sysco","itemNumber":"7155180","name":"Facial Tissues","ppu":52.84,"uom":""},
