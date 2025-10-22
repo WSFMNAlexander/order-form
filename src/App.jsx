@@ -35,43 +35,29 @@ const CATALOG = [
   {"supplier":"Cheney Bros","itemNumber":"10111218","name":"Knives Refill 24/40ct","ppu":40.11,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"10111215","name":"Spoons Refill 24/40ct","ppu":43.57,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"2514028","name":"Spic and Span Floor Cleaner 3/1g","ppu":142.26,"uom":""},
-
-  {"supplier":"Sysco","itemNumber":"7335194","name":"Hand Sanitizer 1/1L","ppu":16.03,"uom":""},
-  {"supplier":"Sysco","itemNumber":"4294924","name":"Hand Soap Cartridge 41150ML","ppu":157.86,"uom":""},
-
   {"supplier":"Cheney Bros","itemNumber":"10140940","name":"Baking Soda 24/16OZ","ppu":27.98,"uom":""},
-  {"supplier":"Sysco","itemNumber":"5026234","name":"Hand Soap bottle Refill 4/1G","ppu":188.02,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"10117657","name":"Comet Bleach Disinfectant Cleaner with Bleach 8/32oz","ppu":31.17,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"811456","name":"Reclosable Bag Quart Size 1/1000CT","ppu":29.47,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"10052301","name":"Reclosable Bag Gallon Size 1/250CT","ppu":19.46,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"8549935","name":"Lysol Disinfectant Spray Crisp Linen 12/19oz","ppu":46.91,"uom":""},
- 
   {"supplier":"Cheney Bros","itemNumber":"00841002","name":"Kitchen Napkins Refill 12/500CT","ppu":49.01,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"00852045","name":"Clorox Disinfecting Wipes 06/75ct","ppu":42.63,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"10144505","name":"Disinfectant Cleaner Multi Surface (Peroxide Cleaner) 6/32oz","ppu":51.67,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"00805045","name":"Office Trash Can Liners 1/500ct","ppu":50.37,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"10016742","name":"Black Trash Can Liner 60 Gallon 100/60G","ppu":43.88,"uom":""},
-  {"supplier":"Sysco","itemNumber":"2544510","name":"Hand sanitizer Cartridge 4/750ML","ppu":75.24,"uom":""},
- 
   {"supplier":"Cheney Bros","itemNumber":"10119370","name":"Windex Glass Cleaner 8/1ct","ppu":28.08,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"00707901","name":"Sponge (Yellow/Green) 20/1ct","ppu":26.18,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"10132395","name":"Gloves X-Large 10/100CT","ppu":58.05,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"10109125","name":"Gloves Large 10/100CT","ppu":58.05,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"10109123","name":"Gloves Medium 10/100CT","ppu":58.05,"uom":""},
-
+  {"supplier":"Cheney Bros","itemNumber":"00851485","name":"Renown Natural White 8 in. Controlled Hardwound Paper Towels","ppu":84.38,"uom":""},
+  {"supplier":"Cheney Bros","itemNumber":"10144505","name":"Disinfectant Cleaner 6/32oz (Sub for CDC-10)","ppu":43.46,"uom":""}
+  {"supplier":"Cheney Bros","itemNumber":"10108502","name":"CloroxPro Clean-Up 9/32oz","ppu":64.85,"uom":""},
   {"supplier":"Office Supply","itemNumber":"ODFN8738593","name":"Diversey BreakDown XC Odor Eliminator 1/2.5L","ppu":111.31,"uom":""},
   {"supplier":"Office Supply","itemNumber":"RAC74035CT","name":"Old English polish 12/12.5OZ","ppu":81.52,"uom":""},
-  {"supplier":"Office Supply","itemNumber":"PGC96257","name":"Febreze Air Clean Linen 6/8.8OZ","ppu":21.56,"uom":""},
   {"supplier":"Office Supply","itemNumber":"CLO31036","name":"Clorox Urine Remover 1/128OZ","ppu":67.71,"uom":""},
-
-  {"supplier":"Cheney Bros","itemNumber":"10108502","name":"CloroxPro Clean-Up 9/32oz","ppu":64.85,"uom":""},
-  {"supplier":"HD Supply","itemNumber":"SPA6343","name":"Bath Disinfectant Cleaner-TNT","ppu":63.48,"uom":""},
   {"supplier":"HD Supply","itemNumber":"SPA7116-12","name":"NABC Bathroom Disinfectant Cleaner","ppu":50.52,"uom":""},
-  {"supplier":"Cheney Bros","itemNumber":"00851485","name":"Renown Natural White 8 in. Controlled Hardwound Paper Towels","ppu":84.38,"uom":""},
-  {"supplier":"HD Supply","itemNumber":"SPA3210-12","name":"CDC-10 4/1G","ppu":64.56,"uom":""},
-  {"supplier":"HD Supply","itemNumber":"SPA6410","name":"Contempo Carpet Spray 12/17OZ","ppu":102.00,"uom":""},
 
-  {"supplier":"Cheney Bros","itemNumber":"10144505","name":"Disinfectant Cleaner 6/32oz (Sub for NABC/CDC-10)","ppu":43.46,"uom":""}
 ];
 
 /* HOOK: mobile detection (no CSS dependence) */
