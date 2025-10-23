@@ -14,7 +14,7 @@ const COLORS = {
 };
 
 /* SUPPLIER ORDER */
-const SUPPLIER_ORDER = ["Sysco", "Office Supply", "HD Supply", "Amazon", "Other"];
+const SUPPLIER_ORDER = ["HD Supply", "Cheney Bros", "Other"];
 
 /* CATALOG (complete) */
 const CATALOG = [
