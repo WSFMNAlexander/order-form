@@ -51,7 +51,7 @@ const CATALOG = [
   {"supplier":"Cheney Bros","itemNumber":"10109125","name":"Gloves Large 10/100CT","ppu":58.05,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"10109123","name":"Gloves Medium 10/100CT","ppu":58.05,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"00851485","name":"Renown Natural White 8 in. Controlled Hardwound Paper Towels","ppu":84.38,"uom":""},
-  {"supplier":"Cheney Bros","itemNumber":"10144505","name":"Disinfectant Cleaner 6/32oz (Sub for CDC-10)","ppu":43.46,"uom":""}
+  {"supplier":"Cheney Bros","itemNumber":"10144505","name":"Disinfectant Cleaner 6/32oz (Sub for CDC-10)","ppu":43.46,"uom":""},
  {
   "supplier": "Cheney Bros",
   "itemNumber": "10108502",
