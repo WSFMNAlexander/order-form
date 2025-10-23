@@ -52,7 +52,13 @@ const CATALOG = [
   {"supplier":"Cheney Bros","itemNumber":"10109123","name":"Gloves Medium 10/100CT","ppu":58.05,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"00851485","name":"Renown Natural White 8 in. Controlled Hardwound Paper Towels","ppu":84.38,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"10144505","name":"Disinfectant Cleaner 6/32oz (Sub for CDC-10)","ppu":43.46,"uom":""}
-  {"supplier":"Cheney Bros","itemNumber":"10108502","name":"CloroxPro Clean-Up 9/32oz","ppu":64.85,"uom":""},
+ {
+  "supplier": "Cheney Bros",
+  "itemNumber": "10108502",
+  "name": "CloroxPro Clean-Up 9/32oz",
+  "ppu": 64.85,
+  "uom": ""
+},
   {"supplier":"Office Supply","itemNumber":"ODFN8738593","name":"Diversey BreakDown XC Odor Eliminator 1/2.5L","ppu":111.31,"uom":""},
   {"supplier":"Office Supply","itemNumber":"RAC74035CT","name":"Old English polish 12/12.5OZ","ppu":81.52,"uom":""},
   {"supplier":"Office Supply","itemNumber":"CLO31036","name":"Clorox Urine Remover 1/128OZ","ppu":67.71,"uom":""},
