@@ -45,6 +45,7 @@ const CATALOG = [
   {"supplier":"Cheney Bros","itemNumber":"852045","name":"Clorox Disinfecting Wipes 06/75ct","ppu":51.32,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"10144505","name":"Disinfectant Cleaner Multi Surface (Peroxide Cleaner) 6/32oz","ppu":51.67,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"805045","name":"Office Trash Can Liners 1/500ct","ppu":25.75,"uom":""},
+  {"supplier":"Cheney Bros","itemNumber":"805118","name":"Medium Trash Can Liner 33 x 39","ppu":22.80,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"10016742","name":"Black Trash Can Liner 60 Gallon 100/60G","ppu":27.43,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"10119370","name":"Windex Glass Cleaner 8/1ct","ppu":43.24,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"707901","name":"Sponge (Yellow/Green) 20/1ct","ppu":26.18,"uom":""},
