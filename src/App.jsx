@@ -19,6 +19,7 @@ const SUPPLIER_ORDER = ["HD Supply", "Cheney Bros", "Other"];
 /* CATALOG (complete) */
 const CATALOG = [
   {"supplier":"Cheney Bros","itemNumber":"10089384","name":"Foam Bowls 20/25ct","ppu":19.39,"uom":""},
+  {"supplier":"Cheney Bros","itemNumber":"514650","name":"Hand Soap Cartridge Refill 6/1000ML","ppu":74.50,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"833123","name":"To Go Food Containers 9x9 (200)","ppu":19.49,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"823040","name":"8oz Foam Cups 40/25ct","ppu":22.00,"uom":""},
   {"supplier":"Cheney Bros","itemNumber":"10034790","name":"Foam Plates 4/125 ct","ppu":40.00,"uom":""},
