@@ -59,6 +59,7 @@ const CATALOG = [
   {"supplier":"Office Supply","itemNumber":"RAC74035CT","name":"Old English polish 12/12.5OZ","ppu":81.52,"uom":""},
   {"supplier":"Office Supply","itemNumber":"CLO31036","name":"Clorox Urine Remover 1/128OZ","ppu":67.71,"uom":""},
   {"supplier":"HD Supply","itemNumber":"SPA7116-12","name":"NABC Bathroom Disinfectant Cleaners","ppu":50.52,"uom":""},
+  {"supplier":"HD Supply","itemNumber":"184301","name":"Metro Toilet Paper","ppu":53.32,"uom":""},
 ];
 
 /* HOOK: mobile detection (no CSS dependence) */
