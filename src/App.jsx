@@ -2,7 +2,7 @@ import React, { useMemo, useState, useEffect } from "react";
 
 /* THEME */
 // top of file
-const HEADER_IMAGE = "/WS%20Logo%20Original%20(2).png";
+const HEADER_IMAGE = "c:\Users\nalexander\OneDrive - White Sands\Pictures\WS Logo Original.png";
 const COLORS = {
   bg: "#d9f2f4",
   text: "#02273f",
