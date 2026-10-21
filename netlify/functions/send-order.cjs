@@ -1,4 +1,4 @@
-// netlify/functions/send-order.js
+// netlify/functions/send-order.cjs
 const { Resend } = require('resend');
 
 // Trim in case the key was pasted with spaces
